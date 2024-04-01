@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "concurrently \"cd backend && nodemon server.js\" \"cd client && npm run start\" ",
     "install-server": "cd backend && npm install",
-    "start-server": "cd backend && node app.js",
+    "start-server": "cd backend && node server.js",
+    "dev-server": "cd backend && nodemon server.js",
     "install-client": "cd client && npm install",
     "build-client": "cd client && npm run build",
     "start-client": "cd client && npm run start"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }

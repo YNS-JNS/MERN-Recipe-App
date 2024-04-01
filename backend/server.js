@@ -1,9 +1,14 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const connectToDb = require("./db/connectToDb");
+const connectToDb = require("./src/configs/db.config");
+const logger = require("morgan");
+const userRoutes = require("./src/routes/user.routes");
+const { notFound, globalErrhandler } = require("./src/middlewares/errorMiddleware");
 
 require("dotenv").config;
+
+const PORT = process.env.PORT || 4000;
 
 // Middleware ______________________
 
@@ -14,6 +19,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+app.use(logger("dev"));
 
 // _________________________________
 
@@ -32,10 +38,18 @@ app.get("/", (req, res) => {
     });
 })
 
+
+app.use("/api/v1/users", userRoutes);
+
+// Error handler middleware ________
+
+app.use(notFound);
+app.use(globalErrhandler);
+
 // _________________________________
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
 
 // _________________________________
